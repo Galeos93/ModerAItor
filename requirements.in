@@ -1,0 +1,14 @@
+black
+pylint
+pytest
+
+boto3
+huggingface_hub
+langchain
+numpy
+matplotlib
+openai
+pandas
+praw
+pydantic
+typer
