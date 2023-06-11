@@ -1,5 +1,4 @@
 from itertools import islice
-import os
 
 from fastapi import FastAPI
 from pydantic import BaseModel

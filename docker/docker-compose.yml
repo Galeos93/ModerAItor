@@ -1,5 +1,14 @@
 version: '3'
 services:
+  web:
+    image: nginx:latest
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./nginx_config.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - moderaitor
   moderaitor:
     build:
       context: .
