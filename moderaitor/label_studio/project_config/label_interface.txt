@@ -1,0 +1,18 @@
+<View>
+  <View style="box-shadow: 2px 2px 5px #999;                padding: 20px; margin-bottom: 2em;                border-radius: 5px;">
+    <Header value="Rules"/>
+    <Text name="rules" value="Lorem ipsum"/>
+  </View>
+  <View style="box-shadow: 2px 2px 5px #999;                padding: 20px; margin-bottom: 2em;                border-radius: 5px;">
+    <Header value="Comment"/>
+    <Text name="text" value="$body"/>
+  </View>
+  <View style="box-shadow: 2px 2px 5px #999;                padding: 20px; margin-top: 2em;                border-radius: 5px;">
+    <Header value="Check if the comment above complies with the rules (SAFE) or not (FLAG)"/>
+    <Choices name="sentiment" toName="text" choice="single" showInLine="true">
+      
+      
+      
+    <Choice value="FLAG"/><Choice value="SAFE"/></Choices>
+  </View>
+</View>

@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+import json
 
 import boto3
 from botocore.errorfactory import ClientError
@@ -25,22 +26,6 @@ class DynamoDBProvider(DatabaseProvider):
                         'AttributeName': 'id',
                         'AttributeType': 'S',
                     }
-                    # {
-                    #     'AttributeName': 'username',
-                    #     'AttributeType': 'S',
-                    # },
-                    # {
-                    #     'AttributeName': 'body',
-                    #     'AttributeType': 'S',
-                    # },
-                    # {
-                    #     'AttributeName': 'flag',
-                    #     'AttributeType': 'S',
-                    # },
-                    # {
-                    #     'AttributeName': 'context',
-                    #     'AttributeType': 'S',
-                    # },
                 ],
                 KeySchema=[
                     {
@@ -66,3 +51,31 @@ class DynamoDBProvider(DatabaseProvider):
         )
 
         print(f"Object saved to DynamoDB table: {self.table_name}")
+
+
+class AWSS3Provider(DatabaseProvider):
+    def __init__(self, bucket_name: str):
+        self.s3_client = boto3.client('s3')
+        self.bucket_name = bucket_name
+
+    def create_bucket(self):
+        try:
+            self.s3_client.create_bucket(
+                ACL="private",
+                Bucket=self.bucket_name
+            )
+        except ClientError as exc:
+            print(exc)
+            if exc.response["Error"]["Code"] != "BucketAlreadyExists":
+                raise
+
+    def save_object(self, object_data: dict) -> bool:
+        # Save the object to DynamoDB table
+        json_data = json.dumps(object_data).encode('utf-8')
+        self.s3_client.put_object(
+            Body=json_data,
+            Bucket=self.bucket_name,
+            Key=object_data['id']
+        )
+
+        print(f"Object saved to S3 bucket: {self.bucket_name}")

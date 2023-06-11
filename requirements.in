@@ -3,12 +3,18 @@ pylint
 pytest
 
 boto3
+fastapi
 huggingface_hub
+label-studio
+label-studio-sdk
 langchain
 numpy
 matplotlib
 openai
 pandas
 praw
+protobuf
 pydantic
+python-dateutil
 typer
+uvicorn

@@ -2,7 +2,7 @@ env-create:
 	tox -e moderaitor
 
 env-compile:
-	pip-compile requirements.in
+	pip-compile --resolver=backtracking requirements.in
 
 lint:
 	pylint moderaitor
@@ -10,5 +10,8 @@ lint:
 test:
 	if [ -z "$(MODEL_VERSION)" ]; then pytest tests; else MODEL_VERSION=$(MODEL_VERSION) pytest tests; fi
 
-run-docker:
-	docker run -e MODEL_VERSION=${MODEL_VERSION} -it --rm -p ${PORT}:${PORT} ${DOCKER_IMAGE} serve --production
+run-app:
+	docker compose -f docker/docker-compose.yml --project-directory . up --build
+
+build-docker:
+	docker build -f docker/moderaitor/Dockerfile -t moderaitor .

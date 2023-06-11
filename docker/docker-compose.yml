@@ -1,0 +1,39 @@
+version: '3'
+services:
+  moderaitor:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    ports:
+      - 8000:8000
+    depends_on:
+      - label-studio
+    secrets:
+      - HUGGINGFACEHUB_API_TOKEN
+      - praw_client_secret
+      - praw_client_id
+    env_file:
+      - docker/LABEL_STUDIO.env
+    environment:
+      - SECRETS_PATH
+
+  label-studio:
+    image: heartexlabs/label-studio:latest
+    ports:
+      - 8080:8080
+    secrets:
+      - HUGGINGFACEHUB_API_TOKEN
+      - praw_client_secret
+      - praw_client_id
+    env_file:
+      - docker/LABEL_STUDIO.env
+    environment:
+      - SECRETS_PATH
+
+secrets:
+  HUGGINGFACEHUB_API_TOKEN:
+    file: docker/HUGGINGFACEHUB_API_TOKEN.secret
+  praw_client_secret:
+    file: docker/praw_client_secret.secret
+  praw_client_id:
+    file: docker/praw_client_id.secret

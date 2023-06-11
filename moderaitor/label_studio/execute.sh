@@ -1,0 +1,1 @@
+label-studio start --port $LABEL_STUDIO_PORT
