@@ -19,7 +19,7 @@ from label_studio_sdk import Client
 
 API_KEY = os.getenv('LABEL_STUDIO_USER_TOKEN')
 
-LABEL_STUDIO_URL = 'http://label-studio:8080'
+LABEL_STUDIO_URL = 'http://localhost:8080'
 
 MAX_RETRY_DURATION = timedelta(seconds=60)
 RETRY_INTERVAL = 2
@@ -32,7 +32,6 @@ def start_client(timeout: timedelta):
         try:
             ls = Client(url=LABEL_STUDIO_URL, api_key=API_KEY)
             response = ls.check_connection()
-            print(response)
             return ls
         except Exception as e:
             print(f"Failed to start client: {str(e)}")
@@ -56,16 +55,16 @@ def main():
 
     response = project.connect_s3_import_storage(
         bucket="quarantined-comments",
-        aws_access_key_id=os.environ['AWS_ACCESS_KEY_ID'],
-        aws_secret_access_key=os.environ['AWS_SECRET_ACCESS_KEY'],
+        aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID', None),
+        aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY', None),
         use_blob_urls=False
     )
     import_storage_id = response['id']
 
     response = project.connect_s3_export_storage(
         bucket="annotated-comments",
-        aws_access_key_id=os.environ['AWS_ACCESS_KEY_ID'],
-        aws_secret_access_key=os.environ['AWS_SECRET_ACCESS_KEY'],
+        aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID', None),
+        aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY', None),
     )
 
     project.sync_storage('s3', import_storage_id)
