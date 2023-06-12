@@ -10,7 +10,7 @@ import os
 import typing
 
 import praw
-from praw.models import Comment
+from praw.models import Comment, MoreComments
 
 from moderaitor.models import BaseComment
 
@@ -41,4 +41,6 @@ def generate_comments(url: str) -> typing.Generator[BaseComment, None, None]:
     submission = client.submission(url=url)
     all_comments = submission.comments.list()
     for comment in all_comments:
+        if isinstance(comment, MoreComments):
+            continue
         yield parse_comment(comment)
