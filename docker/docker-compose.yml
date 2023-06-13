@@ -19,10 +19,11 @@ services:
       - HUGGINGFACEHUB_API_TOKEN
       - praw_client_secret
       - praw_client_id
-    env_file:
-      - docker/LABEL_STUDIO.env
     environment:
       - SECRETS_PATH
+      - COMMENTS_BUCKET
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
 
 secrets:
   HUGGINGFACEHUB_API_TOKEN:

@@ -18,6 +18,8 @@ from label_studio_sdk import Client
 # os.environ['AWS_SECRET_ACCESS_KEY'] = _get_secret()
 
 API_KEY = os.getenv('LABEL_STUDIO_USER_TOKEN')
+COMMENTS_BUCKET = os.getenv("COMMENTS_BUCKET", "quarantined-comments")
+ANNOTATIONS_BUCKET = os.getenv("ANNOTATIONS_BUCKET", "annotated-comments")
 
 LABEL_STUDIO_URL = 'http://localhost:8080'
 
@@ -54,7 +56,7 @@ def main():
     )
 
     response = project.connect_s3_import_storage(
-        bucket="quarantined-comments",
+        bucket=COMMENTS_BUCKET,
         aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID', None),
         aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY', None),
         use_blob_urls=False
@@ -62,7 +64,7 @@ def main():
     import_storage_id = response['id']
 
     response = project.connect_s3_export_storage(
-        bucket="annotated-comments",
+        bucket=ANNOTATIONS_BUCKET,
         aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID', None),
         aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY', None),
     )

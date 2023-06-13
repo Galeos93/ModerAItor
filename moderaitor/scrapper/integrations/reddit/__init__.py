@@ -3,7 +3,7 @@
 Notes
 -----
 To connect to Reddit's Moderaitor app, you need to set the `praw_client_id`
-and the `praw_client_secret` environment variables.
+and the `praw_client_secret` credentials as secret files.
 
 """
 import os

@@ -4,6 +4,7 @@
 ## Scrape and format post
 # Fed posts to app
 from itertools import islice
+import os
 import typing
 
 import typer
@@ -14,6 +15,7 @@ from moderaitor import models
 from moderaitor.llm.openassistant import get_model as get_openassistant_model
 from moderaitor.cli import __app_name__, __version__
 
+COMMENTS_BUCKET = os.getenv("COMMENTS_BUCKET", "quarantined-comments")
 
 app = typer.Typer()
 
@@ -53,8 +55,10 @@ def main(
     llm_chain = get_openassistant_model()
 
     database_provider = database_utils.AWSS3Provider(
-        bucket_name="quarantined-comments"
+        bucket_name=COMMENTS_BUCKET
     )
+
+    database_provider.create_bucket()
 
     for comment in islice(generator, max_items):
         comment_assessment = llm_chain.run(

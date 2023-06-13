@@ -1,4 +1,6 @@
 from itertools import islice
+import logging
+import os
 
 from fastapi import FastAPI
 from pydantic import BaseModel
@@ -9,22 +11,25 @@ from moderaitor import models
 from moderaitor.llm.openassistant import get_model as get_openassistant_model
 from moderaitor.cli import __app_name__, __version__
 
-# Import any necessary libraries for web scraping and comment moderation
+COMMENTS_BUCKET = os.getenv("COMMENTS_BUCKET", "quarantined-comments")
+
+logging.basicConfig(level=logging.INFO)
 
 app = FastAPI()
 
 class CommentModerationRequest(BaseModel):
     url: str
-    explain: bool
+    explain: bool = False
     rules: str
-    max_comments: int
+    max_comments: int = None
 
 
 @app.post("/moderate_post/")
 def moderate_comments(request: CommentModerationRequest):
-    # Extract the URL, explain, and rules from the request
+    logger = logging.getLogger(__name__)
+
     url = request.url
-    explain = request.explain
+    _ = request.explain
     rules = request.rules
     max_items = request.max_comments
 
@@ -32,9 +37,9 @@ def moderate_comments(request: CommentModerationRequest):
     llm_chain = get_openassistant_model()
 
     database_provider = database_utils.AWSS3Provider(
-        bucket_name="quarantined-comments"
+        bucket_name=COMMENTS_BUCKET
     )
-    # database_provider.create_bucket()
+    database_provider.create_bucket()
 
     for comment in islice(generator, max_items):
         comment_assessment = llm_chain.run(
@@ -49,6 +54,7 @@ def moderate_comments(request: CommentModerationRequest):
             body=comment.body,
             flag=comment_assessment[:4],
         )
+        logger.info(reviewed_comment)
         # Save to database
         object_data = reviewed_comment.dict()
         database_provider.save_object(object_data)
