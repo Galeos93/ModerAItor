@@ -51,12 +51,17 @@ def moderate_comments(request: CommentModerationRequest):
         )
         comment_assessment = comment_assessment.strip()
         # Add extra logic for parsing model...
-        reviewed_comment = models.ReviewedComment(
-            id=comment.id,
-            username=comment.username,
-            body=comment.body,
-            flag=comment_assessment[:4],
-        )
+        try:
+            reviewed_comment = models.ReviewedComment(
+                id=comment.id,
+                username=comment.username,
+                body=comment.body,
+                flag=comment_assessment[:4],
+            )
+        except Exception as exc:
+            logger.exception("An error occurred: %s", str(exc))
+            continue
+
         logger.info(reviewed_comment)
         # Save to database
         object_data = reviewed_comment.dict()
