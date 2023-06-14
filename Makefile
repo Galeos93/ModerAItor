@@ -1,7 +1,7 @@
 include LABEL_STUDIO.env
 export $(shell sed 's/=.*//' LABEL_STUDIO.env)
 include docker/AWS.env
-export $(shell sed 's/=.*//' AWS.env)
+export $(shell sed 's/=.*//' docker/AWS.env)
 
 env-create:
 	tox -e moderaitor
