@@ -1,4 +1,5 @@
 from itertools import islice
+import json
 import logging
 import os
 
@@ -41,6 +42,8 @@ def moderate_comments(request: CommentModerationRequest):
     )
     database_provider.create_bucket()
 
+    reviewed_comments = list()
+
     for comment in islice(generator, max_items):
         comment_assessment = llm_chain.run(
             rules=rules,
@@ -58,5 +61,6 @@ def moderate_comments(request: CommentModerationRequest):
         # Save to database
         object_data = reviewed_comment.dict()
         database_provider.save_object(object_data)
+        reviewed_comments.append(reviewed_comment.dict())
 
-    return reviewed_comment.dict()
+    return json.dumps(reviewed_comments)
