@@ -18,7 +18,7 @@ your system. To deploy the application, you have to set a set of secrets first:
 
 - `docker/HUGGINGFACEHUB_API_TOKEN.secret`: file containing `HUGGINGFACEHUB_API_TOKEN`
 - `docker/praw_client_id.secret`: file containing [praw](https://praw.readthedocs.io/en/stable/getting_started/quick_start.html)'s `praw_client_id`
-- `docker/praw_client_secret.secret`: file containing [praw](https://praw.readthedocs.io/en/stable/getting_started/quick_start.html)'s `HUGGINGFACEHUB_API_TOKEN`
+- `docker/praw_client_secret.secret`: file containing [praw](https://praw.readthedocs.io/en/stable/getting_started/quick_start.html)'s `praw_client_secret`
 
 For the hackaton, a public bucket has been created to saved the moderated comments.
 If you want to use this repository after the hackaton, you have to create an
