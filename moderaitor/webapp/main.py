@@ -59,4 +59,4 @@ def moderate_comments(request: CommentModerationRequest):
         object_data = reviewed_comment.dict()
         database_provider.save_object(object_data)
 
-    return {"message": "Comments moderated successfully"}
+    return reviewed_comment.dict()
