@@ -22,19 +22,26 @@ your system. To deploy the application, you have to set a set of secrets first:
 
 For the hackaton, a public bucket has been created to saved the moderated comments.
 If you want to use this repository after the hackaton, you have to create an
-AWS S3 Bucket to save the flagged comments. You also need to know you AWS secret
-access key and access key id.
+AWS S3 Bucket to save the flagged comments.
+
+You also need to set your AWS secret access key and access key id on a `AWS.env`
+file inside the `docker` folder that would look like this:
+
+```
+AWS_ACCESS_KEY_ID=<key-id>
+AWS_SECRET_ACCESS_KEY=<access-id>
+```
 
 Finally, execute this command:
 
 ```bash
-AWS_SECRET_ACCESS_KEY="aws-secret-key"  AWS_ACCESS_KEY_ID="aws-access-key-id" make run-app
+make run-app
 ```
 
 Or this command if you have created a new S3 bucket:
 
 ```bash
-AWS_SECRET_ACCESS_KEY="aws-secret-key"  AWS_ACCESS_KEY_ID="aws-access-key-id" COMMENTS_BUCKET="name-of-bucket" make run-app
+COMMENTS_BUCKET="name-of-bucket" make run-app
 ```
 
 After the app is running (you should see `Uvicorn running on http://0.0.0.0:8000`),
@@ -72,10 +79,19 @@ Set the following environment variables in the `LABEL_STUDIO.env` file:
 These variables contain the credentials for a new user, which will be used to
 set up the project in label studio.
 
+Additionally, you will need an AWS S3 bucket for the human-annotated comments.
+For the hackaton, a public bucket is already available.
+
 Finally, execute the following command:
 
 ```bash
-AWS_SECRET_ACCESS_KEY="aws-secret-key"  AWS_ACCESS_KEY_ID="aws-access-key-id"  make run-annotator
+make run-annotator
+```
+
+Or, alternatively, this one if you created your own S3 buckets:
+
+```bash
+COMMENTS_BUCKET="name-of-bucket" ANNOTATION_BUCKET="name-of-bucket" make run-app
 ```
 
 Now, visit `http://0.0.0.0:8080/`, where you can create a new user and start
