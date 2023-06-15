@@ -25,7 +25,7 @@ class CommentModerationRequest(BaseModel):
     max_comments: int = None
 
 
-@app.post("/moderate_post/")
+@app.post("/moderate_post/", response_model=list[models.ReviewedComment])
 def moderate_comments(request: CommentModerationRequest):
     logger = logging.getLogger(__name__)
 
@@ -66,6 +66,6 @@ def moderate_comments(request: CommentModerationRequest):
         # Save to database
         object_data = reviewed_comment.dict()
         database_provider.save_object(object_data)
-        reviewed_comments.append(reviewed_comment.dict())
+        reviewed_comments.append(reviewed_comment)
 
-    return json.dumps(reviewed_comments)
+    return reviewed_comments
