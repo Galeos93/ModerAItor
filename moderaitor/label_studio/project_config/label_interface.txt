@@ -1,7 +1,7 @@
 <View>
   <View style="box-shadow: 2px 2px 5px #999;                padding: 20px; margin-bottom: 2em;                border-radius: 5px;">
     <Header value="Rules"/>
-    <Text name="rules" value="Lorem ipsum"/>
+    <Text name="rules" value="No offensive comments, offensive submissions or repost spam"/>
   </View>
   <View style="box-shadow: 2px 2px 5px #999;                padding: 20px; margin-bottom: 2em;                border-radius: 5px;">
     <Header value="Comment"/>
