@@ -52,7 +52,7 @@ curl -X POST -H "Content-Type: application/json" -d '{
   "url": "https://www.reddit.com/r/news/comments/148lkof/trump_surrenders_to_federal_custody_in_classified/",
   "rules": "It is not allowed to use offensive words.",
   "max_comments": 10
-}' http://localhost:8000/moderate_post/
+}' http://54.147.130.67/api/moderate_post/
 ```
 
 You will can see on the logs the results of the moderation. In addition, all these
